@@ -105,7 +105,17 @@ Despite these advances, most of the research on LoRA initialization has been lim
 
 To address this question, our work explores whether LoRA initialization strategies developed for LLMs remain effective when applied to VLMs. Specifically, we investigate four representative approaches—**LoRA, PiSSA, EVA,** and **LoftQ**—each of which offers a distinct perspective on adapter initialization, ranging from random initialization and spectral decomposition to activation-aware scaling and context-informed decomposition. By conducting controlled experiments in a unified multimodal fine-tuning framework, we aim to analyze how these strategies affect learning dynamics and performance. Ultimately, our goal is to better understand which initialization practices generalize well across modalities, and which require rethinking in the context of multimodal learning.
 
-### Setting Up the Generative CNN Structure
+## What we do
+In this blog post, we aim to address this open question by conducting a comprehensive analysis of LoRA initialization strategies within the context of VLMs. Specifically, we investigate the following:
+
+### 1. Evaluating Vanilla LoRA in Multimodal Settings
+We investigate whether the training behaviors observed in LLMs with standard LoRA also appear in vision–language models. While prior studies have explored how specific initialization schemes affect convergence and stability in language-only settings, it remains unclear how Vanilla LoRA performs in multimodal contexts. Our goal is to assess whether similar learning dynamics emerge in VLMs or if cross-modal interactions require different initialization considerations.
+
+### 2. Evaluating PiSSA in Multimodal Settings
+We explore whether the recently proposed Principal Singular-value-based Initialization (PiSSA) technique exhibits similar impacts on VLMs as it does on LLMs. PiSSA leverages the principal components of the pre-trained weights to initialize the LoRA adapters in a more informed manner, and has been shown to improve convergence speed and training stability in language-only models. This study extends that investigation to multimodal architectures.
+
+### 3. Ablation Study of General Initialization Strategies
+Beyond zero initialization and PiSSA, we conduct a broader ablation study comparing several principled initialization strategies, including EVA and LoftQ. By evaluating PiSSA, EVA, and LoftQ side by side, we aim to uncover how different design choices influence training dynamics and performance in multimodal models.
 
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
 
