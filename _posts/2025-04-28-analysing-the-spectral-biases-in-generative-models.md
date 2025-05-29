@@ -39,6 +39,7 @@ toc:
   - name: Mitigation of Frequency Bias Using Spectral Diffusion Model
   - name: Conclusion
 ---
+<!--
 # Viewing Images in Frequency Domain
 
 While we typically view images in the spatial domain—where every pixel directly represents brightness or color—another compelling perspective is to examine them in the frequency domain. By applying the 2D Discrete Fourier Transform (DFT)<d-footnote>checkout <a href="https://github.com/Inspiaaa/2D-DFT-Visualisation" target="_blank">this</a> nice demo</d-footnote> <d-cite key="schwarz2021frequencybiasgenerativemodels"> </d-cite>, we can break down an image into its frequency components, revealing hidden structures and patterns that aren’t as apparent in the spatial view. A 2D discrete fourier transform maps a grayscale image $I \in \mathbb{R}^{H \times W}$ to the frequency domain as follows :
@@ -89,8 +90,7 @@ If the details in the scene change more rapidly than this (i.e., they have a hig
 <div class="caption">
     Image Source: <a href="https://www.youtube.com/watch?v=IZJQXlbm2dU" target="_blank">https://www.youtube.com/watch?v=IZJQXlbm2dU</a>
 </div>
-
-
+-->
 
 
 
