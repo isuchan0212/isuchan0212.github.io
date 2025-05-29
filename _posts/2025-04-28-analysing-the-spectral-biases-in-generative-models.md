@@ -28,18 +28,18 @@ bibliography: 2025-04-28-analysing-the-spectral-biases-in-generative-models.bib
 toc:
   - name: Introduction
   - name: What we do
-    subitems:
+    subsections:
       - name: Evaluating Vanilla LoRA in Multimodal Settings
       - name: Evaluating PiSSA in Multimodal Settings
       - name: Ablation Study of General Initialization Strategies
   - name: Experimental setting
   - name: Related work
-    subitems:
+    subsections:
       - name: What is PiSSA?
       - name: What is LoftQ?
       - name: What is EVA?
   - name: Findings
-    subitems:
+    subsections:
       - name: LLaMA 3.2 11B Vision
       - name: Qwen 2.5 VL 7B
   - name: Conclusion
