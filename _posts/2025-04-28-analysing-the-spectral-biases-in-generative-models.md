@@ -128,13 +128,15 @@ PiSSA (Principal Singular Values and Singular Vectors Adaptation) is an advanced
 
 PiSSA leverages SVD by decomposing the pre-trained weight matrix $W$ into singular vectors and singular values as follows:
 
-수식
+W=U\Sigma VTW = U \Sigma V^T
 
 where $U$ and $V$ are orthogonal matrices containing the left and right singular vectors, respectively, and $\Sigma$ is a diagonal matrix of singular values. PiSSA then selects the top $r$ singular values and their corresponding singular vectors to capture the most significant structures of $W$. The low-rank adapter matrices are initialized using these principal components:
 
+A=UrΣr,B=ΣrVrTA = U_r \sqrt{\Sigma_r}, \quad B = \sqrt{\Sigma_r} V_r^T
+
 where $U_r$, $\Sigma_r$, and $V_r$ denote the truncated matrices containing the top $r$ components. The remaining components form the residual matrix, which is kept frozen during fine-tuning.
 
-##original
+## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
 
 {% include figure.html path="assets/img/2025-04-28-analysing-the-spectral-biases-in-generative-models/CNN_Image.png" class="img-fluid" %}
