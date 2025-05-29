@@ -208,6 +208,16 @@ These insights have practical implications for both researchers and practitioner
 
 Ultimately, this study advances the broader goal of making PEFT techniques more effective and reliable across modalities. By revealing the limitations of existing methods and highlighting promising alternatives, we lay the groundwork for future research into modality-specific PEFT strategies for vision, audio, video, and beyond.
 
+## Limitation
+
+While our study provides valuable insights into the effectiveness of LoRA initialization strategies for vision–language models (VLMs), several limitations remain.
+
+First, our experiments were conducted on a fixed set of architectures—Qwen 2.5 VL 7B and LLaMA 3.2 Vision 11B—and a single dataset, LLaVA-Instruct-150K. While these choices reflect strong and widely used baselines, the generalizability of our findings to other model families (e.g., Flamingo, BLIP-2) or diverse multimodal tasks (e.g., grounding, retrieval, video QA) remains to be validated. Future work should assess whether the same trends hold across models with different encoder-decoder structures, pretraining objectives, and data compositions.
+
+Second, we focused primarily on early training dynamics—namely, loss curves and gradient norms within the first epoch. While these are useful proxies for convergence behavior, they do not fully capture long-term generalization or downstream performance. Additional evaluations on zero-shot or few-shot benchmarks, as well as task-specific metrics, would help further contextualize the practical impact of each initialization method.
+
+In summary, while our controlled setup allowed for clear comparisons across initialization strategies, expanding the evaluation scope along these dimensions would provide a more comprehensive understanding of PEFT methods in multimodal learning.
+
 ## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
 
