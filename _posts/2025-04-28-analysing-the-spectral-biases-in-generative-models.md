@@ -117,6 +117,24 @@ We explore whether the recently proposed Principal Singular-value-based Initiali
 ### 3. Ablation Study of General Initialization Strategies
 Beyond zero initialization and PiSSA, we conduct a broader ablation study comparing several principled initialization strategies, including EVA and LoftQ. By evaluating PiSSA, EVA, and LoftQ side by side, we aim to uncover how different design choices influence training dynamics and performance in multimodal models.
 
+## Experimental setting
+The objective of this study is to examine how the learning dynamics of vision–language models (VLMs) vary according to the weight‐initialization schemes employed by LoRA‐based adapters. To this end, we selected Qwen 2.5 VL 7B and LLaMA 3.2 11B Vision as our base architectures and applied four adapter families—LoRA, PiSSA, EVA, and LoftQ—to each. All experiments were orchestrated via the LLaMA-Factory framework, which provides a unified, code-free interface for fine-tuning【6】.
+
+To quantify learning dynamics, we tracked both training loss and gradient norms throughout a single epoch of fine-tuning. Experiments were conducted on 30,000 samples drawn from the LLaVA-Instruct-150K dataset—a GPT-4-generated, multi-modal instruction-following corpus built on MS COCO images, where image-based prompts elicit GPT-4’s answers (questions, explanations, reasoning, etc.). For all LoRA variants we used a rank of 8, and for PiSSA we performed 16 iterative updates. Optimization employed a learning rate of 1 × 10⁻⁴, a cosine scheduler with a warmup ratio of 0.1, and all training ran on NVIDIA A100 GPUs.
+
+## Related work
+### What is PiSSA?
+PiSSA (Principal Singular Values and Singular Vectors Adaptation) is an advanced method designed for parameter-efficient fine-tuning (PEFT) of Large Language Models (LLMs) [3]. It builds upon the Low-Rank Adaptation (LoRA) approach—which typically initializes low-rank matrices A and B randomly, potentially causing slower convergence—by leveraging the intrinsic structure of pre-trained model weights. Specifically, PiSSA employs Singular Value Decomposition (SVD) to identify principal components of the original weight matrix, initializing AA and BB accordingly. This targeted initialization significantly accelerates convergence and enhances overall fine-tuning performance.
+
+PiSSA leverages SVD by decomposing the pre-trained weight matrix $W$ into singular vectors and singular values as follows:
+
+수식
+
+where $U$ and $V$ are orthogonal matrices containing the left and right singular vectors, respectively, and $\Sigma$ is a diagonal matrix of singular values. PiSSA then selects the top $r$ singular values and their corresponding singular vectors to capture the most significant structures of $W$. The low-rank adapter matrices are initialized using these principal components:
+
+where $U_r$, $\Sigma_r$, and $V_r$ denote the truncated matrices containing the top $r$ components. The remaining components form the residual matrix, which is kept frozen during fine-tuning.
+
+##original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
 
 {% include figure.html path="assets/img/2025-04-28-analysing-the-spectral-biases-in-generative-models/CNN_Image.png" class="img-fluid" %}
