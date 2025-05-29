@@ -153,6 +153,16 @@ where W is the original pre-trained weight matrix, $Q$ is the quantized approxim
 Explained Variance Adaptation (EVA) (Paischer et al., 2025) is a novel initialization scheme for parameter-efficient fine-tuning that provably maximizes the expected gradient signal by aligning low-rank adapter matrices with the principal components of downstream activation distributions [8]. At the onset of fine-tuning, EVA performs incremental Singular Value Decomposition (SVD) on minibatches of activation vectors extracted from the pretrained model, updating the right-singular vectors until convergence and using them to initialize the LoRA adapter matrices. To operate within a fixed rank budget, EVA then globally sorts these converged vectors by their explained variance and adaptively allocates ranks so that components capturing the most variance receive higher capacity thereby reducing the overall number of trainable parameters without sacrificing expressiveness. Importantly, the extra computational cost incurred by this data-driven initialization is minimal often under 1% of total fine-tuning time and remains largely invariant to batch size and order. Empirical evaluations across language generation and understanding, image classification, and reinforcement learning tasks demonstrate that EVA consistently converges faster than existing LoRA variants and achieves the highest average domain performance, all while operating more parameter-efficiently than competing initialization and rank-redistribution methods.
 (그림)
 
+## Findings
+To evaluate how different LoRA initialization strategies affect fine-tuning in multimodal settings, we conducted controlled experiments on two models: Qwen 2.5 VL 7B and LLaMA 3.2 11B Vision. For each model, we applied four adapter variants—LoRA, PiSSA, EVA, and LoftQ—and monitored their learning dynamics over 1,600 training steps. Specifically, we tracked training loss and gradient norms to assess convergence speed, optimization stability, and modality-specific behavior. The results are summarized below.
+
+### LLaMA 3.2 11B Vision
+![Figure 2. Training loss on LLaMA 3.2 11B Vision with diverse LoRA variants](attachment:0c37665c-9e97-4247-af24-a4d8b633c085:image.png)
+
+Figure 2. Training loss on LLaMA 3.2 11B Vision with diverse LoRA variants
+
+LoftQ, EVA, PiSSA, and LoRA all follow the same path from the beginning of training until all 1600 optimization steps are completed. PiSSA shows a slightly slower and more irregular decay curve than the other adapters. After 50 steps, the three (LoftQ, EVA, and LoRA) show relatively overlapping trajectories in the 0.97±0.02 band, suggesting that training has entered a plateau. On the other hand, PiSSA has a larger oscillation amplitude in the 1.00±0.03 band and sporadically spikes to 1.06, showing higher volatility than the other methods (Figure 1).
+
 ## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
 
