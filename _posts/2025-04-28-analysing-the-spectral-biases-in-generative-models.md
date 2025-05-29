@@ -1,25 +1,23 @@
 ---
 layout: distill
-title: Analysing The Spectral Biases in Generative Models
-description: Diffusion and GAN models have demonstrated remarkable success in synthesizing high-quality images propelling them into various real-life applications across different domains. However, it has been observed that they exhibit spectral biases that impact their ability to generate certain frequencies and makes it possible to distinguish real images from fake ones. In this blog we analyze these models and attempt to explain the reason behind these biases.
-date: 2025-04-28
+title: Understanding LoRA Finetuning Dynamics within Vision Language Models
+description: (적기)
+date: 2025-05-30
 future: true
 htmlwidgets: true
 hidden: false
 
 # anonymize when submitting 
 authors:
-  - name: Amitoj Singh Miglani
-    url: "https://www.linkedin.com/in/amitoj-singh-miglani-76baa2291/"
+  - name: Baek Seong-Eun
     affiliations:
-      name: IIT, Roorkee
-  - name: Vidit Aggarwal
-    url: "https://www.linkedin.com/in/vidit-aggarwal-328525285/"
+      name: POSTECH
+  - name: Lee Suchan
     affiliations:
-      name: IIT, Roorkee
-  - name: Shweta Singh
+      name: POSTECH
+  - name: Kang Minseo
     affiliations:
-      name: IIT,Roorkee
+      name: POSTECH
 
 
 bibliography: 2025-04-28-analysing-the-spectral-biases-in-generative-models.bib  
