@@ -2,10 +2,10 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: ICLR Blogposts 2025 # the website title (if blank, full name will be used instead)
-first_name: ICLR
+title: Efficient ML 2025 # the website title (if blank, full name will be used instead)
+first_name: Efficent ML
 middle_name: 
-last_name: Blog
+last_name: Term Project
 email: 
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Home to the 2025 ICLR Blogposts track
