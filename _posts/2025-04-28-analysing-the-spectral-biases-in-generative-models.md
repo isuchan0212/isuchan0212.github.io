@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: Understanding LoRA Finetuning Dynamics within Vision Language Models
-description: (적기)
+description: .
 date: 2025-05-30
 future: true
 htmlwidgets: true
