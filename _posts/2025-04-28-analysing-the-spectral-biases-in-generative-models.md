@@ -218,6 +218,7 @@ Second, we focused primarily on early training dynamics—namely, loss curves an
 
 In summary, while our controlled setup allowed for clear comparisons across initialization strategies, expanding the evaluation scope along these dimensions would provide a more comprehensive understanding of PEFT methods in multimodal learning.
 
+<!--
 ## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
 
@@ -641,4 +642,4 @@ It was found that the frequency term in the loss function accounts for the large
 
 # Conclusion
 In this article, we looked at another domain of viewing images and processing them i.e. the frequency domain. We then shed light into how the generative models posses certain biases in the frequency domain, particularly bias against high frequency content generation. We try to explain the reason behind this by breaking down the architecure of GANs<d-cite key="goodfellow2014generativeadversarialnetworks"></d-cite> and diffusion models<d-cite key="ho2020denoisingdiffusionprobabilisticmodels"></d-cite> and look at how the math behind these model's working may lead to these observations. Finally, we discussed an architecture to mitigate these issues.
-
+-->
