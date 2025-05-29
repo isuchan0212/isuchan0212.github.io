@@ -26,16 +26,26 @@ bibliography: 2025-04-28-analysing-the-spectral-biases-in-generative-models.bib
 #   - make sure that TOC names match the actual section names
 #     for hyperlinks within the post to work correctly.
 toc:
-  - name: Viewing Images in Frequency Domain
-  - name: Analysis of Bias in GANs
-  # you can additionally add subentries like so
-    subsections:
-    - name: Setting Up the Generative CNN Structure
-    - name: ReLU as a Fixed Binary Mask
-    - name: Onto The Analysis of Filter Spectrum
-  - name: Frequency bias in Diffusion Models
-  - name: Mitigation of Frequency Bias Using Spectral Diffusion Model
+  - name: Introduction
+  - name: What we do
+    subitems:
+      - name: Evaluating Vanilla LoRA in Multimodal Settings
+      - name: Evaluating PiSSA in Multimodal Settings
+      - name: Ablation Study of General Initialization Strategies
+  - name: Experimental setting
+  - name: Related work
+    subitems:
+      - name: What is PiSSA?
+      - name: What is LoftQ?
+      - name: What is EVA?
+  - name: Findings
+    subitems:
+      - name: LLaMA 3.2 11B Vision
+      - name: Qwen 2.5 VL 7B
   - name: Conclusion
+  - name: Contributions and Impact
+  - name: Limitation
+  - name: Reference
 ---
 <!--
 # Viewing Images in Frequency Domain
