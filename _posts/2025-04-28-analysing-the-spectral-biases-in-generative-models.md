@@ -218,6 +218,11 @@ Second, we focused primarily on early training dynamics—namely, loss curves an
 
 In summary, while our controlled setup allowed for clear comparisons across initialization strategies, expanding the evaluation scope along these dimensions would provide a more comprehensive understanding of PEFT methods in multimodal learning.
 
+## References
+
+::: {#refs}
+:::
+
 <!--
 ## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
