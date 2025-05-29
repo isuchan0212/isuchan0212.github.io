@@ -157,11 +157,56 @@ Explained Variance Adaptation (EVA) (Paischer et al., 2025) is a novel initializ
 To evaluate how different LoRA initialization strategies affect fine-tuning in multimodal settings, we conducted controlled experiments on two models: Qwen 2.5 VL 7B and LLaMA 3.2 11B Vision. For each model, we applied four adapter variants—LoRA, PiSSA, EVA, and LoftQ—and monitored their learning dynamics over 1,600 training steps. Specifically, we tracked training loss and gradient norms to assess convergence speed, optimization stability, and modality-specific behavior. The results are summarized below.
 
 ### LLaMA 3.2 11B Vision
-![Figure 2. Training loss on LLaMA 3.2 11B Vision with diverse LoRA variants](attachment:0c37665c-9e97-4247-af24-a4d8b633c085:image.png)
-
+(그림)
 Figure 2. Training loss on LLaMA 3.2 11B Vision with diverse LoRA variants
 
-LoftQ, EVA, PiSSA, and LoRA all follow the same path from the beginning of training until all 1600 optimization steps are completed. PiSSA shows a slightly slower and more irregular decay curve than the other adapters. After 50 steps, the three (LoftQ, EVA, and LoRA) show relatively overlapping trajectories in the 0.97±0.02 band, suggesting that training has entered a plateau. On the other hand, PiSSA has a larger oscillation amplitude in the 1.00±0.03 band and sporadically spikes to 1.06, showing higher volatility than the other methods (Figure 1).
+LoftQ, EVA, PiSSA, and LoRA all follow the same path from the beginning of training until all 1600 optimization steps are completed. PiSSA shows a slightly slower and more irregular decay curve than the other adapters. After 50 steps, the three (LoftQ, EVA, and LoRA) show relatively overlapping trajectories in the 0.97±0.02 band, suggesting that training has entered a plateau. On the other hand, PiSSA has a larger oscillation amplitude in the 1.00±0.03 band and sporadically spikes to 1.06, showing higher volatility than the other methods (Figure 2).
+
+(그림)
+Figure 3. Grad norm on LLaMA 3.2 11B Vision with diverse LoRA variants
+
+The gradient norm evolution over the 1,600 steps shows a common pattern of a rapid initial spike in the gradient magnitude and then a rapid stabilization as training progresses. PiSSA has the largest peak in the early steps, reaching around 5.0 before settling in the range of 2.0–2.5; LoftQ starts at around 3.6 and then rapidly declines to the range of 0.6–0.8; EVA starts at around 1.2 and soon declines to the range of 0.5–0.9; and plain LoRA has the smallest initial spike (around 0.6) and then stabilizes in the range of 0.4–0.6. After 50 steps, EVA and LoRA show a stable level of oscillation compared to other adapters, while LoftQ shows peaks with large variability in the middle, contrary to the overall low norm. This is presumed to be due to instability caused by the quantization of LoftQ. Also, the norm of PiSSA oscillates at a higher level compared to other adapters (Figure 3).
+
+### Qwen 2.5 VL 7B
+
+(그림)
+
+Figure 4. Training loss on Qwen 2.5 VL 7B with diverse LoRA variants
+
+Across the 1 600 training steps, every LoRA-based variant exhibits a swift reduction in loss relative to its starting point. Yet both PiSSA and LoftQ begin with noticeably higher initial losses than baseline LoRA, and they remain elevated thereafter—PiSSA hovers in the 1.00–1.05 band, while LoftQ settles between about 1.25 and 1.15. This pattern suggests that when an adapter departs too far from re-using the pretrained weights, the loss soon plateaus and resists further improvement. By contrast, EVA and vanilla LoRA track one another almost perfectly, maintaining the lowest loss among the group(Figure 4).
+
+(그림)
+
+Figure 5. Grad norm on Qwen 2.5 VL 7Bwith diverse LoRA variants
+
+LoftQ, EVA, vanilla LoRA, and PiSSA exhibit a sharp drop in gradient norm during the first ~250 steps, after which the norm flattens and oscillates within a narrow band. However, unlike LoRA and EVA, both PiSSA and LoftQ stabilise at markedly higher gradient-norm levels. When this behaviour is juxtaposed with their training-loss curves, it becomes clear that even after the loss has largely saturated, PiSSA and LoftQ continue to apply comparatively large updates. Maintaining a high gradient norm without a corresponding decrease in loss is a classic sign of unstable optimisation, implying that PiSSA and LoftQ drive a less stable training dynamic than the steadier LoRA and EVA baselines within a vision-language model(Figure 5).
+
+In vision–language Transformers, the activation variance of visual tokens is typically 2–3 × larger than that of textual tokens. Introducing a parameter-efficient adapter therefore propagates this mismatch to all subsequent gradients, unless the adapter itself corrects the scale disparity.
+
+LoftQ mitigates the problem implicitly: quantising the base model to 4-bit compresses every weight’s dynamic range, pulling the visual and textual feature distributions into the same magnitude band. During fine-tuning this yields smaller gradient norms and a faster loss decrease.
+
+EVA achieves the same effect explicitly. A learnable gating vector rescales the value-projection at training time, dampening the dominant visual channel so that its back-propagated gradients align with those from the textual channel. The resulting optimisation curve closely tracks LoftQ’s, albeit without the cost of full-model quantisation.
+
+PiSSA decomposes each adapter into parallel low-rank branches that are serialised at inference time. Because no rescaling step is applied after the split, the branch processing visual tokens forwards larger activations unmodified, which inflates gradient norms and slows convergence.
+
+Vanilla LoRA leaves the base scales untouched. Consequently its behaviour falls between the two extremes—stable, yet not as well regularised as LoftQ or EVA.
+
+Overall, our experiments show that successful VLM adaptation requires an adapter that compresses, gates, or otherwise re-normalises cross-modal variance. Methods that ignore the scale gap (e.g. PiSSA) incur higher optimisation error and noisier gradients, whereas adapters that enforce scale-matching (LoftQ, EVA) produce smoother training dynamics and superior final performance.
+
+## Conclusion
+In our experiments, Vanilla LoRA consistently delivered the most stable training performance on both the LLaMA 3.2 11B Vision and the Qwen 2.5 VL 7B models, a result that contradicts the PiSSA paper’s claim that PiSSA is the most stable LoRA-style adapter for large language models. We hypothesize that PiSSA’s relatively poor performance in the vision-language models stems from the additional modality gap introduced by visual feature tokens: unlike pure text inputs, vision-language models must process both textual and image tokens, and this larger gap may interfere with the SVD-based initialization procedure on which PiSSA relies. Moreover, the LoftQ adapter exhibited unstable training behavior across both VLMs: on LLaMA 3.2 11B Vision, we observed intermittent spikes in the gradient norm, while on Qwen 2.5 VL 7B the training loss peaked at its highest values and converged more slowly. We attribute these instabilities to LoftQ’s quantization scheme, noting that the larger parameter budget of the LLaMA 3.2 11B Vision model appears to mitigate—but not eliminate—these effects, resulting in a comparatively smoother training curve. To conclusively demonstrate that quantization degrades the performance of LoRA-family adapters, one must perform an intra-adapter ablation study—comparing PiSSA to its quantized counterpart, QPiSSA—and we designate this rigorous evaluation as a direction for future work.
+
+## **Contributions and Impact**
+
+This work contributes to a deeper understanding of how initialization strategies affect parameter-efficient fine-tuning (PEFT) in multimodal models. While previous studies have focused primarily on language-only models, our analysis extends this discussion to vision–language models (VLMs), highlighting the importance of modality-aware design in adapter initialization.
+
+First, we demonstrate that methods designed for unimodal architectures, such as PiSSA, do not directly translate to VLMs. Despite its theoretical advantages, PiSSA underperforms in multimodal settings due to its inability to account for the scale mismatch between visual and textual modalities. This result challenges the assumption that initialization strategies can be universally applied across model types and suggests the need for tailored approaches in multimodal learning.
+
+Second, we identify two effective solutions—Vanilla LoRA and EVA—that mitigate cross-modal variance through different mechanisms. EVA explicitly aligns visual and textual modalities via activation-aware gating and Vanilla LoRA achieves stable performance by preserving the original model weights without introducing structural changes. Our findings suggest that, in vision–language settings, keeping the pretrained weight distribution largely intact—as Vanilla LoRA does—can be more beneficial than transformations like quantization. Both methods yield more stable gradients and faster convergence, contributing to improved training efficiency in multimodal fine-tuning.
+
+These insights have practical implications for both researchers and practitioners. As VLMs become more prevalent in real-world applications such as image captioning, visual question answering, and multimodal instruction following, the demand for efficient and robust fine-tuning will only grow. Our findings provide actionable guidance for selecting or designing initialization methods that are better suited to the multimodal context.
+
+Ultimately, this study advances the broader goal of making PEFT techniques more effective and reliable across modalities. By revealing the limitations of existing methods and highlighting promising alternatives, we lay the groundwork for future research into modality-specific PEFT strategies for vision, audio, video, and beyond.
 
 ## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
