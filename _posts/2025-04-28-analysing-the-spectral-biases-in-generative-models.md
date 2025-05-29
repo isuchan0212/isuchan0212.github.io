@@ -128,13 +128,26 @@ PiSSA (Principal Singular Values and Singular Vectors Adaptation) is an advanced
 
 PiSSA leverages SVD by decomposing the pre-trained weight matrix $W$ into singular vectors and singular values as follows:
 
-W=U\Sigma VTW = U \Sigma V^T
+(수식)
 
 where $U$ and $V$ are orthogonal matrices containing the left and right singular vectors, respectively, and $\Sigma$ is a diagonal matrix of singular values. PiSSA then selects the top $r$ singular values and their corresponding singular vectors to capture the most significant structures of $W$. The low-rank adapter matrices are initialized using these principal components:
 
-A=UrΣr,B=ΣrVrTA = U_r \sqrt{\Sigma_r}, \quad B = \sqrt{\Sigma_r} V_r^T
+(수식)
 
 where $U_r$, $\Sigma_r$, and $V_r$ denote the truncated matrices containing the top $r$ components. The remaining components form the residual matrix, which is kept frozen during fine-tuning.
+
+### What is LoftQ?
+LoftQ (LoRA-Fine-Tuning-Aware Quantization) is an advanced LoRA-based method designed specifically for fine-tuning quantized Large Language Models (LLMs) [7]. Unlike standard LoRA, which fine-tunes models with randomly initialized low-rank adapter matrices, or QLoRA, which directly applies LoRA to quantized models often resulting in performance degradation, LoftQ jointly optimizes both the quantization and the low-rank approximation of pre-trained weights. Specifically, LoftQ minimizes the approximation error by solving:
+
+$$
+\min_{Q, A, B}\|W - Q - AB^\top\|_F^2
+$$
+
+where W is the original pre-trained weight matrix, $Q$ is the quantized approximation of $W$, and $A,B$ are the low-rank adapter matrices. By aligning quantization with LoRA initialization, LoftQ significantly reduces quantization-induced degradation, thereby enhancing fine-tuning performance compared to traditional LoRA or QLoRA approaches.
+
+### What is EVA?
+Explained Variance Adaptation (EVA) (Paischer et al., 2025) is a novel initialization scheme for parameter-efficient fine-tuning that provably maximizes the expected gradient signal by aligning low-rank adapter matrices with the principal components of downstream activation distributions [8]. At the onset of fine-tuning, EVA performs incremental Singular Value Decomposition (SVD) on minibatches of activation vectors extracted from the pretrained model, updating the right-singular vectors until convergence and using them to initialize the LoRA adapter matrices. To operate within a fixed rank budget, EVA then globally sorts these converged vectors by their explained variance and adaptively allocates ranks so that components capturing the most variance receive higher capacity thereby reducing the overall number of trainable parameters without sacrificing expressiveness. Importantly, the extra computational cost incurred by this data-driven initialization is minimal often under 1% of total fine-tuning time and remains largely invariant to batch size and order. Empirical evaluations across language generation and understanding, image classification, and reinforcement learning tasks demonstrate that EVA consistently converges faster than existing LoRA variants and achieves the highest average domain performance, all while operating more parameter-efficiently than competing initialization and rank-redistribution methods.
+(그림)
 
 ## original
 We’ll start by setting up the structure of a generative CNN model, which typically consists of a series of convolutional layers with filters that learn different features. Our CNN is structured as a stack of convolutional layers, with each layer represented as:
