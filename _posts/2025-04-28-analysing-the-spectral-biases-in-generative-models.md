@@ -123,7 +123,7 @@ We investigate whether the training behaviors observed in LLMs with standard LoR
 We explore whether the recently proposed Principal Singular-value-based Initialization (PiSSA) technique exhibits similar impacts on VLMs as it does on LLMs. PiSSA leverages the principal components of the pre-trained weights to initialize the LoRA adapters in a more informed manner, and has been shown to improve convergence speed and training stability in language-only models. This study extends that investigation to multimodal architectures.
 
 ### 3. Ablation Study of General Initialization Strategies
-Beyond zero initialization and PiSSA, we conduct a broader ablation study comparing several principled initialization strategies, including EVA and LoftQ. By evaluating PiSSA, EVA, and LoftQ side by side, we aim to uncover how different design choices influence training dynamics and performance in multimodal models.
+Beyond vanilla LoRA and PiSSA, we conduct a broader ablation study comparing several principled initialization strategies, including EVA and LoftQ. By evaluating PiSSA, EVA, and LoftQ side by side, we aim to uncover how different design choices influence training dynamics and performance in multimodal models.
 
 ## Experimental setting
 The objective of this study is to examine how the learning dynamics of vision–language models (VLMs) vary according to the weight‐initialization schemes employed by LoRA‐based adapters. To this end, we selected Qwen 2.5 VL 7B and LLaMA 3.2 11B Vision as our base architectures and applied four adapter families—LoRA, PiSSA, EVA, and LoftQ—to each. All experiments were orchestrated via the LLaMA-Factory framework, which provides a unified, code-free interface for fine-tuning【6】.
