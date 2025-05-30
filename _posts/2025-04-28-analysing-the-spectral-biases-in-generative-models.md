@@ -1,7 +1,7 @@
 ---
 layout: distill
 title: Understanding LoRA Finetuning Dynamics within Vision Language Models
-description: .
+description: Several advanced LoRA methods such as EVA, LoftQ, and PiSSA have emerged. We extend these LLM-based LoRA variations to Vision-Language Models (VLMs), aiming to explore the training behavior of VLMs when adopting these LoRA variants specifically tailored for VLM tasks.
 date: 2025-05-30
 future: true
 htmlwidgets: true
