@@ -99,14 +99,3 @@ if (document.querySelector('.shaft')) {
   addEventListener('scroll', look, { passive: true });
   look();
 }
-
-// A glint of sunlight crosses the portrait glass once, when it comes into view.
-const niche = document.querySelector('.about .niche');
-if (niche && 'IntersectionObserver' in window) {
-  const seen = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return;
-    niche.classList.add('glint');
-    seen.disconnect();
-  }, { threshold: .6 });
-  seen.observe(niche);
-}
