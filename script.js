@@ -21,9 +21,7 @@ const alignWall = () => {
 alignWall();
 addEventListener('resize', alignWall);
 
-const write = document.querySelector('.write');
 const labels = [...document.querySelectorAll('.row-label')];
-const email = document.querySelector('.email');
 
 // Light pouring in through the window: the window's shape swept down and to the right.
 // lean: how far the light slants to the right for each unit it falls.
@@ -67,10 +65,9 @@ const pourLight = () => {
 };
 
 if (document.querySelector('.shaft')) {
-  // Section labels warm as they come up the page; the lamp comes on once the address is in view.
+  // Section labels warm as they come up the page.
   const look = () => {
     labels.forEach((el) => el.classList.toggle('lit', el.getBoundingClientRect().top < innerHeight * .6));
-    write.classList.toggle('arrived', email.getBoundingClientRect().top < innerHeight * .8);
   };
   pourLight();
   addEventListener('resize', pourLight);
