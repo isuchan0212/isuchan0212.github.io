@@ -1,0 +1,344 @@
+/*
+  A faded, cream-coloured room with one long window, after Fallingwater,
+  in the washed-out palette of an old film photograph.
+  Outside, a soft hazy sky: a pale sun over a low treeline.
+  Light pours in through the window and falls into the room; at the end, a lamp comes on
+  beside the email address.
+  The portrait sits in a smaller niche cut into the same wall.
+*/
+:root {
+  --wall: #e8e0d2;
+  --wall-deep: #dbd1c0;
+  --frame: #8a7a6b;
+  --sky: #a9b9c2;
+  --lamp: #c9935f;
+  --text: #4a423b;
+  --text-strong: #2f2924;
+  --text-muted: #857a6e;
+  --accent: #6f8791;
+  --seam: rgba(90, 70, 50, .045);
+  --tie: rgba(80, 60, 40, .09);
+  --tie-rim: rgba(255, 252, 246, .55);
+
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
+  --serif: 'Noto Serif KR', 'AppleMyungjo', 'Nanum Myeongjo', Georgia, serif;
+
+  --shell: 1240px;
+  --gutter: clamp(20px, 5vw, 56px);
+  --spine: 34%;
+  --gap: clamp(28px, 3.4vw, 48px);
+  --opening: clamp(340px, 40vw, 540px);
+  --opening-h: clamp(230px, 26vw, 340px);
+  --axis: .3;
+  --depth: clamp(12px, 1.3vw, 18px);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+body {
+  margin: 0;
+  overflow-x: clip;
+  color: var(--text);
+  background-color: var(--wall);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  /* Concrete formwork: panel seams and six form-tie holes per panel, after Ando. */
+  background-image:
+    radial-gradient(circle at 60px 45px, var(--tie) 2.2px, var(--tie-rim) 2.8px, transparent 3.4px),
+    radial-gradient(circle at 180px 45px, var(--tie) 2.2px, var(--tie-rim) 2.8px, transparent 3.4px),
+    radial-gradient(circle at 300px 45px, var(--tie) 2.2px, var(--tie-rim) 2.8px, transparent 3.4px),
+    radial-gradient(circle at 60px 135px, var(--tie) 2.2px, var(--tie-rim) 2.8px, transparent 3.4px),
+    radial-gradient(circle at 180px 135px, var(--tie) 2.2px, var(--tie-rim) 2.8px, transparent 3.4px),
+    radial-gradient(circle at 300px 135px, var(--tie) 2.2px, var(--tie-rim) 2.8px, transparent 3.4px),
+    linear-gradient(to right, var(--seam) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--seam) 1px, transparent 1px);
+  background-size: 360px 180px;
+  background-position: center top;
+}
+/* Film grain over everything, so the page reads like a faded photograph. */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: .16;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .3  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection { background: var(--text-strong); color: var(--wall); }
+
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 1px solid currentColor; outline-offset: 6px; }
+h1, h2, h3, p, ol, dl, dd { margin: 0; padding: 0; }
+ol { list-style: none; }
+[hidden] { display: none !important; }
+
+.skip-link { position: fixed; z-index: 30; left: 16px; top: 16px; transform: translateY(-300%); padding: 10px 16px; background: var(--text-strong); color: var(--wall); }
+.skip-link:focus { transform: none; }
+
+.shell { width: 100%; max-width: calc(var(--shell) + var(--gutter) * 2); margin-inline: auto; padding-inline: var(--gutter); }
+
+.quiet-link { border-bottom: 1px solid color-mix(in srgb, var(--text) 30%, transparent); padding-bottom: 1px; transition: border-color .2s, color .2s; }
+.quiet-link:hover { border-bottom-color: var(--accent); color: var(--accent); }
+
+/* ---------- Hero: the room ---------- */
+
+.hero { position: relative; overflow-x: clip; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+/* Soft daylight on the wall below the window. */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 50% 42% at 56% 78%, rgba(240, 200, 150, .16), transparent 70%);
+}
+
+.top-nav { display: flex; justify-content: flex-end; gap: 28px; padding-block: 28px; font-size: 14px; color: var(--text-muted); position: relative; z-index: 2; }
+.top-nav a:hover { color: var(--text-strong); }
+
+.hero-grid { flex: 1; display: grid; grid-template-columns: var(--spine) 1fr; grid-template-rows: 1fr auto; padding-bottom: clamp(48px, 9vh, 96px); }
+
+.opening {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: center;
+  margin-left: calc(var(--spine) - var(--opening) * var(--axis));
+  width: var(--opening);
+  height: var(--opening-h);
+  margin-block: 2vh 48px;
+  position: relative;
+  z-index: 1;
+}
+/* The view outside, set back by the thickness of the wall: a pale, hazy dusk. */
+.view {
+  position: absolute;
+  inset: var(--depth);
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(to bottom, #9fb2bd 0%, #b8c5c9 55%, #d6d6cc 100%);
+  box-shadow: inset 0 10px 18px -8px rgba(60, 50, 40, .3);
+}
+/* The sky brightens as the sun comes up. */
+.view::before { content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: linear-gradient(to bottom, rgba(70, 80, 100, .45), rgba(120, 100, 90, .25)); animation: dawn 2.8s ease-out both; opacity: 0; }
+@keyframes dawn { from { opacity: 1; } to { opacity: 0; } }
+/* Faint reflections on the glass. */
+.view::after { content: ''; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: linear-gradient(115deg, transparent 22%, rgba(255, 255, 255, .13) 30%, transparent 38%, transparent 58%, rgba(255, 255, 255, .07) 62%, transparent 67%); }
+.cloud { position: absolute; z-index: 0; height: 9%; border-radius: 50%; background: rgba(255, 255, 255, .42); filter: blur(7px); animation: drift 140s linear infinite; }
+.c1 { top: 30%; width: 34%; left: -40%; }
+.c2 { top: 48%; width: 22%; left: -40%; animation-delay: -70s; opacity: .7; }
+@keyframes drift { to { transform: translateX(560%); } }
+/* The sun, upper left in the window. */
+.sun {
+  position: absolute;
+  left: calc(var(--axis) * var(--opening) - var(--depth));
+  top: 22%;
+  width: clamp(24px, 3vw, 40px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 42% 40%, #fffdf6, #f8efdc 70%);
+  z-index: 1;
+  box-shadow: 0 0 18px 6px rgba(255, 246, 225, .55), 0 0 60px 20px rgba(255, 240, 210, .25);
+  animation: rise 2.6s cubic-bezier(.2, .7, .2, 1) both;
+}
+/* On load the sun comes up from behind the trees. */
+@keyframes rise { from { opacity: .4; transform: translate(-50%, 260%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+.forest { z-index: 2; position: absolute; left: 0; bottom: 0; width: 100%; height: 40%; }
+.forest .ridge { fill: #a3aea9; }
+.forest .treeline { fill: #8c9792; }
+
+.frame { position: absolute; inset: var(--depth); border: 5px solid var(--frame); pointer-events: none; }
+
+/* The four faces of an opening cut into the wall, lit softly from the left. */
+.jamb { position: absolute; inset: 0; pointer-events: none; }
+.jamb-top { clip-path: polygon(0 0, 100% 0, calc(100% - var(--depth)) var(--depth), var(--depth) var(--depth)); background: linear-gradient(to right, #d2c7b5, #c9bdab); }
+.jamb-left { clip-path: polygon(0 0, var(--depth) var(--depth), var(--depth) calc(100% - var(--depth)), 0 100%); background: linear-gradient(to bottom, #e2d8c7, #eee3d1); }
+.jamb-right { clip-path: polygon(100% 0, 100% 100%, calc(100% - var(--depth)) calc(100% - var(--depth)), calc(100% - var(--depth)) var(--depth)); background: linear-gradient(to bottom, #c1b5a3, #c8bcaa); }
+.sill { clip-path: polygon(0 100%, var(--depth) calc(100% - var(--depth)), calc(100% - var(--depth)) calc(100% - var(--depth)), 100% 100%); background: linear-gradient(to right, #f1e8da, #e2d9cb 55%, #d3cbbf); }
+
+/* Light pouring in through the window and falling down into the room, with dust in it.
+   Its shape is worked out from the window in script.js. */
+.shaft, .shaft-motes { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.shaft { width: 100%; height: 100%; overflow: visible; filter: blur(7px); animation: pour 2.6s ease-out 2.2s both; }
+.shaft-body { fill: url(#shaft-fade); }
+.shaft-body, .shaft-rays { opacity: var(--fade, 1); }
+.shaft-rays path { fill: url(#shaft-strand); animation: shimmer 6s ease-in-out infinite alternate; }
+.shaft-rays path:nth-child(2) { animation-duration: 8s; animation-delay: -3s; }
+.shaft-rays path:nth-child(3) { animation-duration: 7s; animation-delay: -5s; }
+.shaft-rays path:nth-child(4) { animation-duration: 9s; animation-delay: -2s; }
+.shaft-motes i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff6e4; box-shadow: 0 0 5px 1px rgba(220, 165, 105, .5); animation: float 12s ease-in-out infinite alternate; }
+@keyframes pour { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shimmer { from { opacity: .35; } to { opacity: 1; } }
+
+/* The portrait: a smaller niche in the same wall. */
+.niche { position: relative; --depth: clamp(8px, .9vw, 12px); width: clamp(160px, 15vw, 210px); aspect-ratio: 4 / 5; max-width: 100%; }
+.niche-back { position: absolute; inset: var(--depth); overflow: hidden; background: var(--wall-deep); box-shadow: inset 0 8px 14px -6px rgba(60, 45, 30, .3); }
+.niche-back::after {
+  content: '';
+  position: absolute; inset: -20% -60%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 246, 225, .55) 50%, transparent 60%);
+  transform: translateX(-70%);
+  pointer-events: none;
+}
+.niche.glint .niche-back::after { animation: glint 2.4s cubic-bezier(.4, 0, .2, 1) .3s forwards; }
+@keyframes glint { to { transform: translateX(70%); } }
+.niche-placeholder { position: absolute; inset: 0; width: 100%; height: 100%; fill: rgba(120, 100, 80, .14); }
+.niche-back img { position: relative; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.82) sepia(.1) contrast(.95); }
+
+.hero-text { grid-column: 2; grid-row: 2; align-self: end; padding-left: var(--gap); max-width: 34em; position: relative; z-index: 1; }
+.hero-text h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(34px, 4.2vw, 56px); line-height: 1.15; letter-spacing: -.01em; color: var(--text-strong); margin-bottom: 20px; }
+.hero-text p { font-size: 17px; line-height: 1.75; max-width: 30em; }
+
+@keyframes float {
+  0% { transform: translate(0, 0); opacity: .2; }
+  35% { opacity: .9; }
+  65% { opacity: .5; }
+  100% { transform: translate(10px, -26px); opacity: .85; }
+}
+
+/* ---------- Rows ---------- */
+
+.row { display: grid; grid-template-columns: var(--spine) 1fr; padding-block: clamp(72px, 11vw, 140px) 0; }
+.row-label { grid-column: 1; text-align: right; padding-right: var(--gap); font-size: 14px; font-weight: 400; line-height: 1.9; color: var(--text-muted); transition: color 1s ease; }
+/* Each label warms as it comes up the page. */
+.row-label.lit { color: #a8733f; }
+.row-body { grid-column: 2; padding-left: var(--gap); max-width: 44em; }
+.row-body > p + p { margin-top: 18px; }
+.about .row-side { grid-column: 1; display: flex; justify-content: flex-end; padding-right: var(--gap); }
+.about .row-body { align-self: center; }
+.lead { font-family: var(--serif); font-weight: 300; font-size: clamp(21px, 2vw, 26px); line-height: 1.6; color: var(--text-strong); margin-bottom: 28px; }
+
+.works li { position: relative; }
+.works li + li { margin-top: 40px; }
+/* A warm sliver of light beside the entry you're pointing at. */
+.works li::before {
+  content: '';
+  position: absolute; left: -18px; top: 4px; bottom: 4px;
+  width: 2px; border-radius: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(214, 160, 100, .85), transparent);
+  opacity: 0; transform: scaleY(.4);
+  transition: opacity .4s ease, transform .5s cubic-bezier(.3, .6, .2, 1);
+}
+.works li:hover::before { opacity: 1; transform: none; }
+.when { font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.works h3 { font-size: 18px; font-weight: 500; line-height: 1.6; color: var(--text-strong); }
+.works p:not(.when) { margin-top: 4px; font-size: 15px; line-height: 1.75; max-width: 38em; }
+.works .role { color: var(--text-muted); }
+.works .role strong { font-weight: 500; color: var(--text-strong); }
+.works h3 .paper { background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size .3s ease; }
+.works h3 .paper:hover { background-size: 100% 1px; }
+.works .links { display: flex; gap: 18px; font-size: 14px; }
+.more { margin-top: 44px; font-size: 15px; }
+
+.lately-intro { max-width: 32em; }
+
+/* ---------- Where the light lands ---------- */
+
+.write { padding-block: clamp(120px, 16vw, 200px) 0; }
+.write .row-label { padding-top: .45em; }
+.landing { position: relative; }
+/* When the light lands, a lamp comes on and warms the wall around it. */
+.landing::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--gap) * -1 - 360px);
+  top: calc(.9em - 240px);
+  width: 720px; height: 480px;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(236, 170, 100, .2), transparent);
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.arrived .landing::before { opacity: 1; }
+.emails { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.email { position: relative; font-size: clamp(20px, 2.2vw, 26px); color: var(--text-strong); line-height: 1.8; border-bottom: 1px solid rgba(201, 147, 95, .35); transition: border-color 1.2s; }
+.email:hover, .arrived .email { border-bottom-color: var(--lamp); }
+.elsewhere { position: relative; margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: var(--text-muted); }
+
+.site-foot { display: grid; grid-template-columns: var(--spine) 1fr; padding-block: clamp(120px, 14vw, 180px) 40px; font-size: 13px; color: var(--text-muted); }
+.site-foot > span { grid-column: 2; padding-left: var(--gap); }
+
+/* ---------- CV ---------- */
+
+body.day { --tie: rgba(80, 60, 40, .06); --tie-rim: rgba(255, 252, 246, .3); }
+
+.cv-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-block: 28px; font-size: 14px; }
+.cv-top a, .print-button { color: var(--text-muted); }
+.cv-top a:hover, .print-button:hover { color: var(--text-strong); }
+.print-button { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+
+.cv-head { display: grid; grid-template-columns: var(--spine) 1fr; padding-block: clamp(56px, 8vw, 110px) 0; }
+.cv-head > div { grid-column: 2; padding-left: var(--gap); border-left: 1px solid rgba(90, 70, 50, .18); }
+.cv-head h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(34px, 4.2vw, 52px); line-height: 1.15; color: var(--text-strong); }
+.cv-head p { margin-top: 14px; font-size: 16px; }
+.cv-head .contact { display: flex; flex-wrap: wrap; gap: 6px 24px; color: var(--text-muted); font-size: 15px; }
+
+.cv-section { display: grid; grid-template-columns: var(--spine) 1fr; }
+.cv-section > h2 { grid-column: 1; text-align: right; padding: clamp(56px, 6vw, 80px) var(--gap) 0 0; font-size: 14px; font-weight: 400; line-height: 1.9; color: var(--text-muted); }
+.cv-section > .entries { grid-column: 2; padding: clamp(56px, 6vw, 80px) 0 0 var(--gap); border-left: 1px solid rgba(90, 70, 50, .18); max-width: calc(44em + var(--gap)); }
+.cv-section:last-of-type > .entries { padding-bottom: 20px; }
+
+.entry + .entry { margin-top: 32px; }
+.entry .date { font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.entry h3 { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--text-strong); }
+.entry p { font-size: 15px; line-height: 1.75; }
+.entry .role { color: var(--text-muted); }
+.entry ul { margin: 8px 0 0; padding-left: 1.1em; font-size: 15px; line-height: 1.75; }
+.entry li + li { margin-top: 4px; }
+.entries > p { font-size: 15px; line-height: 1.75; }
+
+.skills { display: grid; grid-template-columns: 7.5em 1fr; gap: 8px 20px; margin: 0; font-size: 15px; }
+.skills dt { color: var(--text-muted); }
+.skills dd { color: var(--text-strong); }
+
+.day .site-foot { padding-top: 96px; }
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 760px) {
+  :root { --opening: calc(100vw - var(--gutter) * 2); --opening-h: 230px; --axis: .14; --depth: 9px; --gap: 24px; }
+  body { font-size: 15px; }
+  .shell { --spine: calc(var(--opening) * var(--axis)); }
+  .hero-grid, .row, .cv-head, .cv-section, .site-foot { grid-template-columns: var(--spine) 1fr; }
+  .top-nav { gap: 22px; }
+  .hero-text p { font-size: 16px; }
+  .row { padding-top: 88px; }
+  .row-label { grid-column: 2; grid-row: 1; text-align: left; padding: 0 0 18px var(--gap); }
+  .row-body { grid-row: 2; }
+  .about .row-side { grid-column: 2; grid-row: 1; justify-content: flex-start; padding: 0 0 32px var(--gap); }
+  .about .niche { width: 150px; }
+  .write { padding-top: 100px; }
+  .write .row-label { padding-top: 0; }
+  .landing::before { width: 520px; height: 460px; left: calc(var(--gap) * -1 - 260px); top: calc(.9em - 230px); }
+
+  .cv-section > h2 { grid-column: 2; grid-row: 1; text-align: left; padding: 56px 0 14px var(--gap); border-left: 1px solid rgba(90, 70, 50, .18); }
+  .cv-section > .entries { grid-row: 2; padding-top: 0; }
+  .skills { grid-template-columns: 1fr; gap: 0; }
+  .skills dd + dt { margin-top: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .sun, .cloud, .view::before, .shaft, .shaft-rays path, .shaft-motes i, .niche.glint .niche-back::after { animation: none; }
+  .works li::before { transition: none; }
+  .view::before { opacity: 0; }
+  .email, .landing::before { transition: none; }
+}
+
+@media print {
+  body { background: #fff; color: #111; font-size: 10pt; }
+  body::after { display: none; }
+  body.day { --text: #111; --text-strong: #000; --text-muted: #555; }
+  .cv-top, .site-foot, .skip-link { display: none; }
+  .shell { max-width: none; padding: 0; }
+  .cv-head, .cv-section { display: block; padding: 0; }
+  .cv-head > div, .cv-section > .entries { border: 0; padding: 0; max-width: none; }
+  .cv-head h1 { font-size: 26pt; }
+  .cv-section > h2 { text-align: left; padding: 22pt 0 8pt; font-size: 10pt; color: #000; font-weight: 600; }
+  .entry { break-inside: avoid; }
+  .entry + .entry { margin-top: 12pt; }
+  .entry h3, .entry p, .entry ul, .entries > p, .skills { font-size: 9.5pt; line-height: 1.5; }
+  @page { margin: 16mm; }
+}

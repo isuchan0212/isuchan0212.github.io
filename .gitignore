@@ -1,0 +1,21 @@
+# The CV source (PDF) stays local and is never committed. The public CV is cv.html.
+cv_*.pdf
+CV_*.pdf
+*.[pP][dD][fF]
+# ...except the public copy the site links to. Refresh it with: cp cv_2026.pdf assets/cv.pdf
+!assets/cv.pdf
+cv/
+CV/
+private/
+
+# Local tooling and preview output.
+.DS_Store
+node_modules/
+.cache/
+.preview/
+test-results/
+playwright-report/
+*.log
+
+# Original photos straight from the phone carry GPS location; publish only the cleaned assets/portrait.jpg.
+assets/suchan.jpeg
