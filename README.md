@@ -23,7 +23,8 @@ npm run check
 - `cv.html`: 이전의 웹 CV(현재 링크되지 않음)
 - `styles.css`: 벽과 창, 색, 레이아웃, 모바일, 인쇄 스타일
 - `script.js`: 창에서 쏟아지는 빛, CV 인쇄 버튼
-- `assets/favicon.svg`: 사이트 아이콘
+- `assets/favicon.svg`, `assets/apple-touch-icon.png`: 사이트 아이콘(창, 해, 쏟아지는 빛)
+- `assets/og.png`: 링크 미리보기 이미지(1200×630, 첫 화면 캡처). 첫 화면을 크게 바꾸면 다시 만들어 주세요.
 - `assets/portrait.jpg`: 프로필 사진. 원본(`assets/suchan.jpeg`, Git 제외)을 960px로 줄이고 위치(GPS) 등 메타데이터를 지운 공개용 파일입니다. 사진을 바꿀 때도 같은 처리를 해주세요. 첫 화면 아래 소개 칸 왼쪽 벽감에 들어갑니다. 4:5 세로 비율, 가로 800px 이상 권장. 파일이 없으면 사람 실루엣 placeholder가 보입니다.
 - `scripts/serve.mjs`: 외부 의존성 없는 로컬 미리보기 서버
 

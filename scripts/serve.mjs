@@ -9,6 +9,8 @@ const files = new Map([
   ['/styles.css', ['styles.css', 'text/css; charset=utf-8']],
   ['/script.js', ['script.js', 'text/javascript; charset=utf-8']],
   ['/assets/favicon.svg', ['assets/favicon.svg', 'image/svg+xml']],
+  ['/assets/og.png', ['assets/og.png', 'image/png']],
+  ['/assets/apple-touch-icon.png', ['assets/apple-touch-icon.png', 'image/png']],
   ['/assets/cv.pdf', ['assets/cv.pdf', 'application/pdf']],
   ['/assets/portrait.jpg', ['assets/portrait.jpg', 'image/jpeg']],
 ]);
