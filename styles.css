@@ -83,6 +83,9 @@ ol { list-style: none; }
 .shell { width: 100%; max-width: calc(var(--shell) + var(--gutter) * 2); margin-inline: auto; padding-inline: var(--gutter); }
 
 .quiet-link { border-bottom: 1px solid color-mix(in srgb, var(--text) 30%, transparent); padding-bottom: 1px; transition: border-color .2s, color .2s; }
+/* People's names: a quiet underline that warms on hover. */
+.person { color: inherit; border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent); transition: border-color .2s, color .2s; }
+.person:hover { color: var(--text-strong); border-bottom-color: #c9935f; }
 .quiet-link:hover { border-bottom-color: var(--accent); color: var(--accent); }
 
 /* ---------- Hero: the room ---------- */
@@ -96,17 +99,17 @@ ol { list-style: none; }
   background: radial-gradient(ellipse 50% 42% at 56% 78%, rgba(240, 200, 150, .16), transparent 70%);
 }
 
-/* Lights down: on arrival the room is dark and only the window glows.
-   The house lights come up with the sunlight, and then the name appears like an opening title. */
+/* On arrival the room is flooded with light, as if the shutter opened wide,
+   and settles into its usual light; then the name appears like an opening title. */
 .hero::after {
   content: '';
   position: absolute; inset: 0;
-  z-index: 3;
+  z-index: 5;
   pointer-events: none;
-  background: radial-gradient(ellipse 80% 70% at 42% 36%, rgba(38, 31, 26, .82), rgba(24, 19, 16, .94));
-  animation: house-lights 2.4s cubic-bezier(.45, 0, .2, 1) 1.5s both;
+  background: radial-gradient(ellipse 85% 75% at 42% 38%, rgba(255, 253, 247, .96), rgba(252, 246, 234, .9) 60%, rgba(247, 238, 222, .82));
+  animation: exposure 2.8s cubic-bezier(.3, 0, .2, 1) .4s both;
 }
-@keyframes house-lights { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+@keyframes exposure { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
 .hero-text h1 { animation: title-in 2s cubic-bezier(.2, .6, .2, 1) 3.1s both; }
 .hero-text p { animation: title-in 1.6s cubic-bezier(.2, .6, .2, 1) 3.6s both; }
 @keyframes title-in { from { opacity: 0; transform: translateY(10px); letter-spacing: .04em; } to { opacity: 1; transform: none; } }
