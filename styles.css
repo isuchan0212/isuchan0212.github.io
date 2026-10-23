@@ -2,8 +2,9 @@
   A faded, cream-coloured room with one long window, after Fallingwater,
   in the washed-out palette of an old film photograph.
   Outside, a soft hazy sky: a pale sun over a low treeline.
-  Light pours in through the window and falls into the room; at the end, a lamp comes on
-  beside the email address.
+  Light pours in through the window and falls into the room.
+  At night (data-theme="dark") it is the same room after dark: a crescent moon and stars,
+  and moonlight in place of sunlight.
   The portrait sits in a smaller niche cut into the same wall.
 */
 :root {
@@ -115,7 +116,15 @@ ol { list-style: none; }
 .hero-text > p { animation: title-in 1s cubic-bezier(.2, .6, .2, 1) 1.05s both; }
 @keyframes title-in { from { opacity: 0; transform: translateY(10px); letter-spacing: .04em; } to { opacity: 1; transform: none; } }
 .top-nav { display: flex; justify-content: flex-end; gap: 28px; padding-block: 28px; font-size: 14px; color: var(--text-muted); position: relative; z-index: 2; }
+.top-nav { align-items: center; }
 .top-nav a:hover { color: var(--text-strong); }
+.theme-toggle { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-left: -4px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; border-radius: 50%; transition: color .2s, background-color .2s; }
+.theme-toggle:hover { color: var(--text-strong); background: color-mix(in srgb, var(--text) 8%, transparent); }
+.theme-toggle svg { width: 17px; height: 17px; }
+.theme-toggle .i-moon { fill: currentColor; }
+.theme-toggle .i-sun { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.theme-toggle .i-sun circle { fill: currentColor; stroke: none; }
+[data-theme='dark'] .theme-toggle .i-moon, :root:not([data-theme='dark']) .theme-toggle .i-sun { display: none; }
 
 .hero-grid { flex: 1; display: grid; grid-template-columns: var(--spine) 1fr; grid-template-rows: 1fr auto; padding-bottom: clamp(48px, 9vh, 96px); }
 
@@ -266,7 +275,11 @@ ol { list-style: none; }
 .emails .sep { color: var(--text-muted); }
 .email { position: relative; color: var(--text-strong); line-height: 1.7; padding-bottom: 1px; border-bottom: 1px solid rgba(201, 147, 95, .35); transition: border-color 1.2s; }
 .email:hover { border-bottom-color: var(--lamp); }
-.elsewhere { position: relative; margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: var(--text-muted); }
+.elsewhere { position: relative; margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; color: var(--text-muted); }
+.icon-link { display: inline-grid; place-items: center; width: 22px; height: 22px; transition: color .2s, transform .2s; }
+.icon-link svg { width: 19px; height: 19px; fill: currentColor; }
+.icon-link .stroke { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.icon-link:hover { color: var(--text-strong); transform: translateY(-1px); }
 
 .site-foot { display: grid; grid-template-columns: var(--spine) 1fr; padding-block: clamp(120px, 14vw, 180px) 40px; font-size: 13px; color: var(--text-muted); }
 .site-foot > span { grid-column: 2; padding-left: var(--gap); }
@@ -278,6 +291,76 @@ ol { list-style: none; }
 .works h3 { font-size: 20px; letter-spacing: -.005em; }
 .works p:not(.when):not(.role) { font-size: 16.5px; }
 .works .role { font-size: 15px; }
+
+/* ---------- Night ---------- */
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --wall: #1c1a18;
+  --wall-deep: #15130f;
+  --lamp: #d6a86f;
+  --text: #c9c0b2;
+  --text-strong: #eee6d8;
+  --text-muted: #8d8476;
+  --accent: #a6bccb;
+  --seam: rgba(255, 240, 220, .03);
+  --tie: rgba(0, 0, 0, .32);
+  --tie-rim: rgba(255, 240, 220, .035);
+}
+[data-theme='dark'] body::after { mix-blend-mode: soft-light; opacity: .22; }
+/* Moonlight on the wall instead of warm daylight. */
+[data-theme='dark'] .hero::before { background: radial-gradient(ellipse 50% 42% at 56% 78%, rgba(150, 175, 215, .07), transparent 70%); }
+/* On arrival at night, the room is dark and settles to moonlight. */
+[data-theme='dark'] .hero::after { background: radial-gradient(ellipse 85% 75% at 42% 38%, rgba(8, 9, 14, .9), rgba(6, 7, 10, .95)); }
+[data-theme='dark'] .opening { filter: drop-shadow(0 24px 30px rgba(0, 0, 0, .35)); }
+/* A night sky with a few stars. */
+[data-theme='dark'] .view {
+  background:
+    radial-gradient(1px 1px at 14% 22%, rgba(255, 255, 255, .8), transparent),
+    radial-gradient(1px 1px at 31% 12%, rgba(255, 255, 255, .55), transparent),
+    radial-gradient(1.5px 1.5px at 47% 30%, rgba(255, 255, 255, .7), transparent),
+    radial-gradient(1px 1px at 62% 16%, rgba(255, 255, 255, .6), transparent),
+    radial-gradient(1px 1px at 71% 38%, rgba(255, 255, 255, .45), transparent),
+    radial-gradient(1.5px 1.5px at 83% 20%, rgba(255, 255, 255, .75), transparent),
+    radial-gradient(1px 1px at 91% 44%, rgba(255, 255, 255, .4), transparent),
+    radial-gradient(1px 1px at 22% 46%, rgba(255, 255, 255, .35), transparent),
+    linear-gradient(to bottom, #0f1625 0%, #1b2436 58%, #2c3142 100%);
+  box-shadow: inset 0 10px 18px -8px rgba(0, 0, 0, .6);
+}
+[data-theme='dark'] .view::before { background: linear-gradient(to bottom, rgba(5, 7, 12, .7), rgba(10, 10, 16, .5)); }
+[data-theme='dark'] .view::after { opacity: .45; }
+[data-theme='dark'] .cloud { background: rgba(190, 205, 230, .1); }
+/* The sun becomes a crescent moon: a pale disc with the night sky laid over part of it. */
+[data-theme='dark'] .sun {
+  background: radial-gradient(circle at 40% 40%, #f6f3e8, #dcd8c9 75%);
+  box-shadow: 0 0 16px 4px rgba(215, 225, 245, .28), 0 0 60px 18px rgba(170, 190, 225, .12);
+  overflow: hidden;
+}
+[data-theme='dark'] .sun::after { content: ''; position: absolute; inset: -2%; border-radius: 50%; background: #121a2a; transform: translate(34%, -16%); }
+[data-theme='dark'] .forest .ridge { fill: #273041; }
+[data-theme='dark'] .forest .treeline { fill: #161c26; }
+[data-theme='dark'] .frame { border-color: #4b4540; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .04); }
+[data-theme='dark'] .jamb-top { background: linear-gradient(to right, #26221e, #221e1b); }
+[data-theme='dark'] .jamb-left { background: linear-gradient(to bottom, #2c2824, #34302b); }
+[data-theme='dark'] .jamb-right { background: linear-gradient(to bottom, #1a1815, #1d1a17); }
+[data-theme='dark'] .sill { background: linear-gradient(to right, #3a352f, #2f2b27 55%, #282521); }
+/* Moonlight falling into the room: cooler and fainter than the sun. */
+[data-theme='dark'] #shaft-fade stop:nth-child(1) { stop-color: #c9d6ee; stop-opacity: .16; }
+[data-theme='dark'] #shaft-fade stop:nth-child(2) { stop-color: #b4c4e2; stop-opacity: .05; }
+[data-theme='dark'] #shaft-fade stop:nth-child(3) { stop-color: #b8c7e2; }
+[data-theme='dark'] #shaft-strand stop:nth-child(1) { stop-color: #dbe5f6; stop-opacity: .2; }
+[data-theme='dark'] #shaft-strand stop:nth-child(2) { stop-color: #c6d4ee; stop-opacity: .05; }
+[data-theme='dark'] #shaft-strand stop:nth-child(3) { stop-color: #d5e0f2; }
+[data-theme='dark'] .shaft { mix-blend-mode: screen; }
+[data-theme='dark'] .shaft-body, [data-theme='dark'] .shaft-rays { opacity: calc(var(--fade, 1) * .75); }
+[data-theme='dark'] .shaft-motes i { opacity: .7;  background: #e7eefb; box-shadow: 0 0 5px 1px rgba(170, 190, 230, .45); }
+[data-theme='dark'] .niche { background: linear-gradient(160deg, #2e2a26, #26231f); box-shadow: 0 0 0 1px rgba(255, 240, 220, .06), 0 2px 4px -2px rgba(0, 0, 0, .5), 0 30px 44px -28px rgba(0, 0, 0, .8); }
+[data-theme='dark'] .niche-back img { filter: saturate(.75) sepia(.08) contrast(.95) brightness(.88); }
+[data-theme='dark'] .niche-placeholder { fill: rgba(255, 240, 220, .08); }
+[data-theme='dark'] .row-label.lit { color: #c9a273; }
+[data-theme='dark'] .person:hover, [data-theme='dark'] .email:hover { border-bottom-color: var(--lamp); }
+[data-theme='dark'] .email { border-bottom-color: rgba(214, 168, 111, .35); }
+[data-theme='dark'] .cv-head > div, [data-theme='dark'] .cv-section > .entries, [data-theme='dark'] .cv-section > h2 { border-color: rgba(255, 240, 220, .1); }
 
 /* ---------- CV ---------- */
 

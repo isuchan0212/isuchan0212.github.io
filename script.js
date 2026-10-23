@@ -1,13 +1,39 @@
 'use strict';
 
 // Everything on the site reads fine without JavaScript.
-// This file adds two things: the light pouring in through the window, and the CV print button.
+// This file adds: day and night, the light pouring in through the window, and the CV print button.
 
 const printButton = document.querySelector('[data-print-cv]');
 if (printButton) {
   printButton.hidden = false;
   printButton.addEventListener('click', () => window.print());
 }
+
+// Day and night. The theme is set before first paint (inline script in <head>);
+// this keeps it in step with the toggle, the browser bar colour, and the system setting.
+const root = document.documentElement;
+const toggle = document.querySelector('.theme-toggle');
+const themeColor = document.querySelector('meta[name="theme-color"]');
+const applyTheme = (theme) => {
+  root.dataset.theme = theme;
+  if (themeColor) themeColor.content = theme === 'dark' ? '#1c1a18' : '#e8e0d2';
+  if (toggle) {
+    const label = theme === 'dark' ? 'Switch to day' : 'Switch to night';
+    toggle.setAttribute('aria-label', label);
+    toggle.title = label;
+  }
+};
+applyTheme(root.dataset.theme === 'dark' ? 'dark' : 'light');
+toggle?.addEventListener('click', () => {
+  const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  try { localStorage.setItem('theme', next); } catch (e) {}
+});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (err) {}
+  if (!saved) applyTheme(e.matches ? 'dark' : 'light');
+});
 
 // Shift the concrete panels so the page's axis runs between two columns of tie holes,
 // never right beside a seam.
